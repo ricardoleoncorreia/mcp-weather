@@ -6,11 +6,12 @@
   "type": "module",
   "scripts": {
     "start": "npx -y tsx index.ts",
-    "test": "npx -y @modelcontextprotocol/inspector npx -y tsx index.ts" 
+    "test": "npx -y @modelcontextprotocol/inspector npx -y tsx index.ts"
   },
   "license": "ISC",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1",
+    "axios": "^1.9.0",
     "zod": "^3.25.56"
   }
 }

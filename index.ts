@@ -1,5 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import axios from 'axios';
 import { z } from 'zod';
 
 /**
@@ -22,8 +23,8 @@ server.tool(
     city: z.string().describe('The name of the city to fetch weather for'),
   },
   async ({ city }) => {
-    const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=10&language=en&format=json`);
-    const data = await response.json();
+    const response = await axios.get(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=10&language=en&format=json`);
+    const data = response.data;
 
     if (data.results.length === 0) {
       return {
@@ -37,8 +38,8 @@ server.tool(
     }
 
     const { latitude, longitude } = data.results[0];
-    const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&current=temperature_2m,precipitation,rain,is_day`);
-    const weatherData = await weatherResponse.json();
+    const weatherResponse = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&current=temperature_2m,precipitation,rain,is_day`);
+    const weatherData = await weatherResponse.data;
 
     return {
       content: [
